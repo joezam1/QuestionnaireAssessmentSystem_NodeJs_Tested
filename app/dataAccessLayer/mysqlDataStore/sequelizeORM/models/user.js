@@ -13,10 +13,24 @@ module.exports = (sequelize, DataTypes) => {
 			// define association here
 			User.hasMany(models.ResponseStatement,{
 				foreignKey:"UserId"
-			})
+			});
+
 			User.hasMany(models.Response,{
 				foreignKey:"UserId"
 			});
+
+			User.hasMany(models.Register,{
+				foreignKey:"UserId"
+			});
+
+			User.hasMany(models.Session,{
+				foreignKey:"UserId"
+			});
+
+			User.belongsTo(models.Role,{
+                through:models.UserRole,
+                foreignKey:'UserId'
+            });
 		}
 	}
 	User.init({
@@ -30,6 +44,8 @@ module.exports = (sequelize, DataTypes) => {
 			type:DataTypes.INTEGER,
 			primaryKey:false,
 			allowNull:false,
+			unique: true,
+			autoIncrement: true,
 			value:undefined
 		},
 		FirstName:{
@@ -55,6 +71,7 @@ module.exports = (sequelize, DataTypes) => {
 		Email:{
 			type:DataTypes.STRING,
 			allowNull:false,
+			unique: true,
 			value:undefined
 		},
 		Password:{
@@ -63,7 +80,7 @@ module.exports = (sequelize, DataTypes) => {
 			value:undefined
 		},		
 		Sex:{
-			type:DataTypes.STRING,
+			type:DataTypes.INTEGER,
 			allowNull:false,
 			value:undefined
 		},

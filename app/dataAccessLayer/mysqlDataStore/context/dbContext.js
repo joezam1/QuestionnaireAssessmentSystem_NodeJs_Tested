@@ -14,6 +14,10 @@ const Section = require('../sequelizeORM/models/section.js');
 const Subcategory = require('../sequelizeORM/models/subcategory.js');
 const User = require('../sequelizeORM/models/user.js');
 
+const Register = require('../sequelizeORM/models/register.js');
+const Role = require('../sequelizeORM/models/role.js');
+const Session = require('../sequelizeORM/models/session.js');
+const UserRole = require('../sequelizeORM/models/userrole.js');
 
 
 let sequelizeConnection = null;
@@ -41,6 +45,10 @@ const getSequelizeContext = function(){
         const SubcategoryDtoModel = Subcategory(sequelize, allDataTypes);
         const UserDtoModel = User(sequelize, allDataTypes);
 
+        const RegisterDtoModel = Register(sequelize, allDataTypes);
+        const RoleDtoModel = Role(sequelize, allDataTypes);
+        const SessionDtoModel = Session(sequelize, allDataTypes);
+        const UserRoleDtoModel = UserRole(sequelize, allDataTypes);
         
         allSequelizeDtoModels = {
             CategoryDtoModel : CategoryDtoModel,
@@ -53,7 +61,11 @@ const getSequelizeContext = function(){
             ResponseStatementDtoModel : ResponseStatementDtoModel,
             SectionDtoModel : SectionDtoModel,
             SubcategoryDtoModel : SubcategoryDtoModel,
-            UserDtoModel : UserDtoModel
+            UserDtoModel : UserDtoModel,
+            RegisterDtoModel: RegisterDtoModel,
+            RoleDtoModel : RoleDtoModel,
+            SessionDtoModel : SessionDtoModel,
+            UserRoleDtoModel: UserRoleDtoModel
         }
 
         return allSequelizeDtoModels;

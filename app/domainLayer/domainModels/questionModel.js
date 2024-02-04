@@ -1,12 +1,10 @@
-
-
-
-
-function questionModel(){
+const questionModel = function(){
     let _questionId = null;
     let _questionNumber = null;
     let _text = null;
     let _sectionId = null;
+    let _answered = false;
+    let _className = 'hide';
     let _categorySubcategoryObj = {
         CategorySubcategoryId: null,
         CategoryObj: {
@@ -83,6 +81,8 @@ function questionModel(){
             QuestionId: _questionId,
             QuestionNumber: _questionNumber,
             Text: _text,
+            Answered: _answered,
+            ClassName:_className,
             SectionId: _sectionId,
             CategorySubcategory: _categorySubcategoryObj
         }

@@ -1,7 +1,4 @@
-const GLOBAL_SWITCH = false;
-
-
-
+const GLOBAL_SWITCH = true;
 
 
 const service = {

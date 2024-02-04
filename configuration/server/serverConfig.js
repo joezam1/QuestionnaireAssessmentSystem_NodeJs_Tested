@@ -1,8 +1,8 @@
 const envConfig = require('../../configuration/environment/envConfig.js');
 const monitorService = require('../../app/servicesLayer/monitoring/monitorService.js');
-const messageService = require('../../app/servicesLayer/mesages/messageService.js');
+const messageService = require('../../app/servicesLayer/messages/messageService.js');
 
-const whitelistRemoteOrigins = ['http://localhost:8080'];
+const whitelistRemoteOrigins = ['http://localhost:5080'];
 
 const configuration = {
     HTTP_PORT: 5500,
@@ -45,13 +45,17 @@ function resolveOriginWhiteListing(origin, callback){
 
 
 function whiteListOrigin(origin, callback){
+
+    console.log('function whiteListOrigin', origin);
     if(whitelistRemoteOrigins.indexOf(origin) === -1){
         let msg = messageService.corsErrorNotification;
         let corsError = new Error(msg);
+        console.log('function whiteListOrigin-corsError', corsError);
         callback(corsError);
         return;
     }
     else{
+        console.log('function whiteListOrigin-SUCCESS');
         callback(null, true);
     }
 }

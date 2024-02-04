@@ -14,13 +14,18 @@ module.exports = {
 				allowNull: false,
 				value: undefined
 			},
+			ResponseIndex: {
+				type: Sequelize.INTEGER,
+				primaryKey: false,
+				allowNull: false,
+				value: undefined
+			},
 			ResponseStatementId: {
 				type: Sequelize.UUID,
 				allowNull: false,
 				references: {
 					model: "ResponseStatements",
 					key: "ResponseStatementId",
-
 				}
 			},
 			UserId: {
@@ -31,6 +36,14 @@ module.exports = {
 					key: "UserId"
 				}
 			},
+			QuestionChoiceId: {
+				type: Sequelize.UUID,
+				allowNull: false,
+				references: {
+					model: "QuestionChoices",
+					key: "QuestionChoiceId"
+				}
+			},
 			QuestionId: {
 				type: Sequelize.UUID,
 				allowNull: false,
@@ -38,6 +51,26 @@ module.exports = {
 					model: "Questions",
 					key: "QuestionId"
 				}
+			},
+			ChoiceId: {
+				type: Sequelize.UUID,
+				allowNull: false,
+				references: {
+					model: "Choices",
+					key: "ChoiceId"
+				}
+			},
+			CategoryId: {
+				type: Sequelize.UUID,
+				allowNull: false,
+				references: {
+					model: "Categories",
+					key: "CategoryId"
+				}
+			},
+			QuestionAsked: {
+				type: Sequelize.TEXT,
+				allowNull: false
 			},
 			Answer: {
 				type: Sequelize.TEXT,

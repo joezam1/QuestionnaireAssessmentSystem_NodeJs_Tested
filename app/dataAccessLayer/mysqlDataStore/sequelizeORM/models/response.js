@@ -16,9 +16,18 @@ module.exports = (sequelize, DataTypes) => {
 			})
 			Response.belongsTo(models.ResponseStatement,{
 				foreignKey:"ResponseStatementId"
+			});			
+			Response.belongsTo(models.QuestionChoice,{
+				foreignKey: "QuestionChoiceId"
 			});
 			Response.belongsTo(models.Question,{
 				foreignKey: "QuestionId"
+			});
+			Response.belongsTo(models.Choice,{
+				foreignKey: "ChoiceId"
+			});
+			Response.belongsTo(models.Category,{
+				foreignKey: "CategoryId"
 			});
 		}
 	}
@@ -35,6 +44,12 @@ module.exports = (sequelize, DataTypes) => {
 			allowNull: false,
 			value: undefined
 		},
+		ResponseIndex: {
+			type: DataTypes.INTEGER,
+			primaryKey: false,
+			allowNull: false,
+			value: undefined
+		},
 		ResponseStatementId:{
 			type:DataTypes.UUID,
 			allowNull:false,
@@ -45,8 +60,28 @@ module.exports = (sequelize, DataTypes) => {
 			allowNull:false,
 			value:undefined
 		},
+		QuestionChoiceId:{
+			type:DataTypes.UUID,
+			allowNull:false,
+			value:undefined
+		},
 		QuestionId:{
 			type:DataTypes.UUID,
+			allowNull:false,
+			value:undefined
+		},
+		ChoiceId:{
+			type:DataTypes.UUID,
+			allowNull:false,
+			value:undefined
+		},
+		CategoryId:{
+			type:DataTypes.UUID,
+			allowNull:false,
+			value:undefined
+		},
+		QuestionAsked:{
+			type: DataTypes.TEXT,
 			allowNull:false,
 			value:undefined
 		},

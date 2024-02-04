@@ -1,38 +1,37 @@
+const dbContext = require('../context/dbContext.js');
+const dtoModel = require('../../../servicesLayer/enumerations/dtoModel.js');
 
-const dbAction = require('../mysqlDataStore/context/dbAction.js');
-const dbContext = require('../mysqlDataStore/context/dbContext.js');
 
 let _context = null;
 
 onInit();
 
-const getQuestionnaireInfoByIdAsync = async function(uuid){
+const createQuestionnaireDtoModel = function(dtoModelEnum, paramOptions){
 
-    let query = `SELECT * FROM questionnairedb.questionnaires where QuestionnaireId = '${uuid}'`;
-    var statementResult = await  dbAction.executeStatementAsync(query);
-    if(statementResult instanceof Error){
-        return statementResult;
+    let result = null;
+    switch(dtoModelEnum){
+
+        case dtoModel.QuestionnaireDtoModel_MappedFromDatabase:
+            result = createQuestionnaireDtoModelMappedFromDatabase(paramOptions.parameterArray);
+        break;
     }
+    return result;
 
-    let questionnaireInfoDtoModel = getQuestionnaireDtoModelMappedFromDatabase(statementResult[0]);
-
-    return questionnaireInfoDtoModel;
 }
 
-
-const questionnaireRepository = Object.freeze({
-    getQuestionnaireInfoByIdAsync : getQuestionnaireInfoByIdAsync
+const questionnaireDtoModelFactory = Object.freeze({
+    createQuestionnaireDtoModel : createQuestionnaireDtoModel
 });
 
-module.exports = questionnaireRepository;
+module.exports = questionnaireDtoModelFactory;
 
-
-//#REGION Private Functions 
-
+//#REGION: Private Functions
 function onInit(){
     _context = dbContext.getSequelizeContext();
 }
-function getQuestionnaireDtoModelMappedFromDatabase(databaseResultArray){
+
+
+function createQuestionnaireDtoModelMappedFromDatabase(databaseResultArray){
 
     let allQuestionnairesDtoModel = [];
     for(let a = 0; a < databaseResultArray.length; a++){
@@ -55,4 +54,4 @@ function getQuestionnaireDtoModelMappedFromDatabase(databaseResultArray){
     return allQuestionnairesDtoModel;
 }
 
-//#ENDREGION Private Functions 
+//#ENDREGION: Private Functions

@@ -1,5 +1,8 @@
 const dbAction = require('../mysqlDataStore/context/dbAction.js');
 const dbContext = require('../mysqlDataStore/context/dbContext.js');
+const questionChoiceDtoModelFactory = require('../mysqlDataStore/dtoModelsFactories/questionChoiceDtoModelFactory.js');
+const dtoModel = require('../../servicesLayer/enumerations/dtoModel.js');
+const parameterOptions = require('../mysqlDataStore/dtoModelsFactories/parameterOptions.js');
 
 let _context = null;
 
@@ -13,8 +16,11 @@ const getAllQuestionChoicesByAllQuestionsIdAsync = async function(questionIdArra
     if(statementResult instanceof Error){
         return statementResult;
     }
-    
-    let allQuestionChoicesDtoModel = getAllQuestionChoicesDtoModelMappedFromDatabase(statementResult[0]);
+
+    let paramOptions = new parameterOptions();
+    paramOptions.parameterArray = statementResult[0];
+    let allQuestionChoicesDtoModel = questionChoiceDtoModelFactory.createQuestionChoiceDtoModel(dtoModel.QuestionChoicesDtoModel_MappedFromDatabase,paramOptions);
+    // getAllQuestionChoicesDtoModelMappedFromDatabase(statementResult[0]);
     return allQuestionChoicesDtoModel;
 }
 
@@ -69,49 +75,49 @@ function buildQueryStatement(questionIdArray){
 }
 
 
-function getAllQuestionChoicesDtoModelMappedFromDatabase(databaseResultArray){
+// function getAllQuestionChoicesDtoModelMappedFromDatabase(databaseResultArray){
 
     
-    let allQuestionChoicessDtoModel = [];
-    for(let a = 0; a < databaseResultArray.length; a++){
-        let questionChoiceDb = databaseResultArray[a];
-        let _questionChoiceDtoModel = new _context.QuestionChoiceDtoModel();
-        let _choiceDtoModel = new _context.ChoiceDtoModel();
-        let _categoryDtoModel = new _context.CategoryDtoModel();
-        let _subcategoryDtoModel = new _context.SubcategoryDtoModel();
+//     let allQuestionChoicessDtoModel = [];
+//     for(let a = 0; a < databaseResultArray.length; a++){
+//         let questionChoiceDb = databaseResultArray[a];
+//         let _questionChoiceDtoModel = new _context.QuestionChoiceDtoModel();
+//         let _choiceDtoModel = new _context.ChoiceDtoModel();
+//         let _categoryDtoModel = new _context.CategoryDtoModel();
+//         let _subcategoryDtoModel = new _context.SubcategoryDtoModel();
 
-        _choiceDtoModel.rawAttributes.Name.value = questionChoiceDb.ChoiceName;
-        _choiceDtoModel.rawAttributes.Value.value = questionChoiceDb.ChoiceValue;
-        _choiceDtoModel.rawAttributes.CategorySubcategoryId.value = questionChoiceDb.CategorySubcategoryId;
+//         _choiceDtoModel.rawAttributes.Name.value = questionChoiceDb.ChoiceName;
+//         _choiceDtoModel.rawAttributes.Value.value = questionChoiceDb.ChoiceValue;
+//         _choiceDtoModel.rawAttributes.CategorySubcategoryId.value = questionChoiceDb.CategorySubcategoryId;
 
-        let clonedChoiceDtoModel = JSON.parse(JSON.stringify(_choiceDtoModel.rawAttributes));
+//         let clonedChoiceDtoModel = JSON.parse(JSON.stringify(_choiceDtoModel.rawAttributes));
 
-        _categoryDtoModel.rawAttributes.CategoryId.value = questionChoiceDb.CategoryId;
-        _categoryDtoModel.rawAttributes.Name.value = questionChoiceDb.CategoryName;
-        _categoryDtoModel.rawAttributes.Description.value = questionChoiceDb.CategoryDescription;
+//         _categoryDtoModel.rawAttributes.CategoryId.value = questionChoiceDb.CategoryId;
+//         _categoryDtoModel.rawAttributes.Name.value = questionChoiceDb.CategoryName;
+//         _categoryDtoModel.rawAttributes.Description.value = questionChoiceDb.CategoryDescription;
 
-        let clonedCategoryDtoModel = JSON.parse(JSON.stringify(_categoryDtoModel.rawAttributes));
+//         let clonedCategoryDtoModel = JSON.parse(JSON.stringify(_categoryDtoModel.rawAttributes));
 
-        _subcategoryDtoModel.rawAttributes.SubcategoryId.value = questionChoiceDb.SubcategoryId;
-        _subcategoryDtoModel.rawAttributes.Name.value = questionChoiceDb.SubcategoryName;
-        _subcategoryDtoModel.rawAttributes.Description.value = questionChoiceDb.SubcategoryDescription;
+//         _subcategoryDtoModel.rawAttributes.SubcategoryId.value = questionChoiceDb.SubcategoryId;
+//         _subcategoryDtoModel.rawAttributes.Name.value = questionChoiceDb.SubcategoryName;
+//         _subcategoryDtoModel.rawAttributes.Description.value = questionChoiceDb.SubcategoryDescription;
 
-        let clonedSubcategoryDtoModel = JSON.parse(JSON.stringify(_subcategoryDtoModel.rawAttributes));
+//         let clonedSubcategoryDtoModel = JSON.parse(JSON.stringify(_subcategoryDtoModel.rawAttributes));
 
-        _questionChoiceDtoModel.rawAttributes.QuestionChoiceId.value = questionChoiceDb.QuestionChoiceId;
-        _questionChoiceDtoModel.rawAttributes.QuestionId.value = questionChoiceDb.QuestionId;
-        _questionChoiceDtoModel.rawAttributes.ChoiceId.value = questionChoiceDb.ChoiceId;
+//         _questionChoiceDtoModel.rawAttributes.QuestionChoiceId.value = questionChoiceDb.QuestionChoiceId;
+//         _questionChoiceDtoModel.rawAttributes.QuestionId.value = questionChoiceDb.QuestionId;
+//         _questionChoiceDtoModel.rawAttributes.ChoiceId.value = questionChoiceDb.ChoiceId;
 
-        let clonedAttributes = JSON.parse(JSON.stringify(_questionChoiceDtoModel.rawAttributes));
-        clonedAttributes.ChoiceObj = clonedChoiceDtoModel;
-        clonedAttributes.CategoryObj = clonedCategoryDtoModel;
-        clonedAttributes.SubcategoryObj = clonedSubcategoryDtoModel;
-        allQuestionChoicessDtoModel.push(clonedAttributes);
+//         let clonedAttributes = JSON.parse(JSON.stringify(_questionChoiceDtoModel.rawAttributes));
+//         clonedAttributes.ChoiceObj = clonedChoiceDtoModel;
+//         clonedAttributes.CategoryObj = clonedCategoryDtoModel;
+//         clonedAttributes.SubcategoryObj = clonedSubcategoryDtoModel;
+//         allQuestionChoicessDtoModel.push(clonedAttributes);
 
 
-    }
-    return allQuestionChoicessDtoModel;
-}
+//     }
+//     return allQuestionChoicessDtoModel;
+// }
 //#ENDREGION Private Functions
 
 

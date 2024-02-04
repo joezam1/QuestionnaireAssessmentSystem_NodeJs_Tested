@@ -3,6 +3,7 @@
 const questionChoiceModel = function(){
     let _questionChoiceId = null;
     let _questionId = null;
+    let _selected = false;
     let _choiceObj = {
         ChoiceId : null,
         CategorySubcategoryId : null,
@@ -81,7 +82,8 @@ const questionChoiceModel = function(){
             QuestionId: _questionId,
             ChoiceObj :_choiceObj,
             CategoryObj :_categoryObj,
-            SubcategoryObj:_subcategoryObj
+            SubcategoryObj:_subcategoryObj,
+            Selected: _selected
         }
     }
 

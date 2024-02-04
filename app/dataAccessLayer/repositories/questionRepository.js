@@ -1,5 +1,8 @@
 const dbAction = require('../mysqlDataStore/context/dbAction.js');
 const dbContext = require('../mysqlDataStore/context/dbContext.js');
+const questionDtoModelFactory = require('../mysqlDataStore/dtoModelsFactories/questionDtoModelFactory.js');
+const dtoModelEnum = require('../../servicesLayer/enumerations/dtoModel.js');
+const parameterOptions = require('../mysqlDataStore/dtoModelsFactories/parameterOptions.js');
 
 let _context = null;
 
@@ -12,8 +15,11 @@ const getAllQuestionsByAllSectionsIdAsync  = async function(sectionIdArray){
     if(statementResult instanceof Error){
         return statementResult;
     }
+    let paramOptions = new parameterOptions();
+    paramOptions.parameterArray = statementResult[0];
 
-    let allQuestionsDtoModel = getAllQuestionsDtoModelMappedFromDatabase(statementResult[0]);
+    let allQuestionsDtoModel = questionDtoModelFactory.createQuestionDtoModel(dtoModelEnum.QuestionsDtoModel_MappedFromDatabase , paramOptions);
+    //getAllQuestionsDtoModelMappedFromDatabase(statementResult[0]);
 
     return allQuestionsDtoModel;
 }
@@ -81,45 +87,45 @@ function buildQueryStatement(sectionIdArray){
 
 }
 
-function getAllQuestionsDtoModelMappedFromDatabase(databaseResultArray){
+// function getAllQuestionsDtoModelMappedFromDatabase(databaseResultArray){
 
-    let allQuestionsDtoModel = [];
-    for(let a = 0; a < databaseResultArray.length; a++){
-        let questionDb = databaseResultArray[a];
-        let _questionDtoModel = new _context.QuestionDtoModel();
-        let _categoryDtoModel = new _context.CategoryDtoModel();
-        let _subcategoryDtoModel = new _context.SubcategoryDtoModel();
+//     let allQuestionsDtoModel = [];
+//     for(let a = 0; a < databaseResultArray.length; a++){
+//         let questionDb = databaseResultArray[a];
+//         let _questionDtoModel = new _context.QuestionDtoModel();
+//         let _categoryDtoModel = new _context.CategoryDtoModel();
+//         let _subcategoryDtoModel = new _context.SubcategoryDtoModel();
 
-        _categoryDtoModel.rawAttributes.CategoryId.value = questionDb.CategoryId;
-        _categoryDtoModel.rawAttributes.Name.value = questionDb.CategoryName;
-        _categoryDtoModel.rawAttributes.Description.value = questionDb.CategoryDescription;
+//         _categoryDtoModel.rawAttributes.CategoryId.value = questionDb.CategoryId;
+//         _categoryDtoModel.rawAttributes.Name.value = questionDb.CategoryName;
+//         _categoryDtoModel.rawAttributes.Description.value = questionDb.CategoryDescription;
 
-        let clonedCategoryDtoModel = JSON.parse(JSON.stringify(_categoryDtoModel.rawAttributes));
+//         let clonedCategoryDtoModel = JSON.parse(JSON.stringify(_categoryDtoModel.rawAttributes));
 
-        _subcategoryDtoModel.rawAttributes.SubcategoryId.value = questionDb.CategorySubcategoryId;
-        _subcategoryDtoModel.rawAttributes.Name.value = questionDb.SubcategoryName;
-        _subcategoryDtoModel.rawAttributes.Description.value = questionDb.SubcategoryDescription;
+//         _subcategoryDtoModel.rawAttributes.SubcategoryId.value = questionDb.CategorySubcategoryId;
+//         _subcategoryDtoModel.rawAttributes.Name.value = questionDb.SubcategoryName;
+//         _subcategoryDtoModel.rawAttributes.Description.value = questionDb.SubcategoryDescription;
 
-        let clonedSubcategoryDtoModel = JSON.parse(JSON.stringify(_subcategoryDtoModel.rawAttributes));
+//         let clonedSubcategoryDtoModel = JSON.parse(JSON.stringify(_subcategoryDtoModel.rawAttributes));
 
-        _questionDtoModel.rawAttributes.QuestionId.value = questionDb.QuestionId;
-        _questionDtoModel.rawAttributes.QuestionNumber.value = questionDb.QuestionNumber;
-        _questionDtoModel.rawAttributes.Text.value = questionDb.Text;
-        _questionDtoModel.rawAttributes.SectionId.value = questionDb.SectionId;
-        _questionDtoModel.rawAttributes.CategorySubcategoryId.value = questionDb.CategorySubcategoryId;
-        _questionDtoModel.rawAttributes.Value.value = questionDb.Value;
-        _questionDtoModel.rawAttributes.UTCDateCreated.value = questionDb.UTCDateCreated;
-        _questionDtoModel.rawAttributes.UTCDateUpdated.value = questionDb.UTCDateUpdated;
-        _questionDtoModel.rawAttributes.UTCDateArchived.value = questionDb.UTCDateArchived;
+//         _questionDtoModel.rawAttributes.QuestionId.value = questionDb.QuestionId;
+//         _questionDtoModel.rawAttributes.QuestionNumber.value = questionDb.QuestionNumber;
+//         _questionDtoModel.rawAttributes.Text.value = questionDb.Text;
+//         _questionDtoModel.rawAttributes.SectionId.value = questionDb.SectionId;
+//         _questionDtoModel.rawAttributes.CategorySubcategoryId.value = questionDb.CategorySubcategoryId;
+//         _questionDtoModel.rawAttributes.Value.value = questionDb.Value;
+//         _questionDtoModel.rawAttributes.UTCDateCreated.value = questionDb.UTCDateCreated;
+//         _questionDtoModel.rawAttributes.UTCDateUpdated.value = questionDb.UTCDateUpdated;
+//         _questionDtoModel.rawAttributes.UTCDateArchived.value = questionDb.UTCDateArchived;
 
-        let clonedAttributes = JSON.parse(JSON.stringify(_questionDtoModel.rawAttributes));
-        clonedAttributes.CategoryObj = clonedCategoryDtoModel;
-        clonedAttributes.SubcategoryObj = clonedSubcategoryDtoModel;
-        allQuestionsDtoModel.push(clonedAttributes);
+//         let clonedAttributes = JSON.parse(JSON.stringify(_questionDtoModel.rawAttributes));
+//         clonedAttributes.CategoryObj = clonedCategoryDtoModel;
+//         clonedAttributes.SubcategoryObj = clonedSubcategoryDtoModel;
+//         allQuestionsDtoModel.push(clonedAttributes);
 
-    }
-    return allQuestionsDtoModel;
+//     }
+//     return allQuestionsDtoModel;
 
-}
+// }
 
 //#ENDREGION Private Functions 

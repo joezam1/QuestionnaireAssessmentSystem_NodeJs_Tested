@@ -4,17 +4,62 @@ const questionModel = require('../domainModels/questionModel.js');
 const questionChoiceModel = require('../domainModels/questionChoiceModel.js');
 
 
-let createQuestionnaireModelArray = function(questionnaireDtoModelArray )
+const domainModel = require('../../servicesLayer/enumerations/domainModel.js');
+
+ const createModelArray= function(modelEnum, selectedDTOModelArray){
+
+    let result = null;
+    switch(modelEnum){
+
+        case domainModel.QuestionnaireModel:
+            result = createQuestionnaireModelArray(selectedDTOModelArray);
+        break;
+
+        case domainModel.SectionModel:
+            result = createAllSectionsModelArray(selectedDTOModelArray);
+        break;
+
+        case domainModel.QuestionModel:
+            result = createQuestionModelArray(selectedDTOModelArray);
+        break;
+
+        case domainModel.QuestionChoiceModel:
+            result = createQuestionChoicesModelArray(selectedDTOModelArray);
+        break;
+    }
+    return result;
+
+}
+
+
+const questionnaireDomainFactory = Object.freeze({
+
+    createModelArray:createModelArray
+});
+
+module.exports = questionnaireDomainFactory;
+
+
+
+
+//#REGION Private Functions
+
+let createQuestionnaireModelArray = function( questionnaireDtoModelArray )
 {
-    let questionnaireDtoModel = questionnaireDtoModelArray[0];
-    let _questionnaireModel = new questionnaireModel();
-    _questionnaireModel.setQuestionnaireId(questionnaireDtoModel.QuestionnaireId.value);
-    _questionnaireModel.setQuestionnaireIndex(questionnaireDtoModel.QuestionnaireIndex.value);
-    _questionnaireModel.setName(questionnaireDtoModel.Name.value);
-    _questionnaireModel.setDescription(questionnaireDtoModel.Description.value);
+    let allQuestionnaireModels = [];
+    for(let a = 0; a < questionnaireDtoModelArray.length; a++){
+        let questionnaire = questionnaireDtoModelArray[a];
+        let _questionnaireModel = new questionnaireModel();
+        _questionnaireModel.setQuestionnaireId(questionnaire.QuestionnaireId.value);
+        _questionnaireModel.setQuestionnaireIndex(questionnaire.QuestionnaireIndex.value);
+        _questionnaireModel.setName(questionnaire.Name.value);
+        _questionnaireModel.setDescription(questionnaire.Description.value);
+        
+        let questionnaireInfo = _questionnaireModel.getQuestionnaireModelObj();
+        allQuestionnaireModels.push(questionnaireInfo);
+    }
     
-    let questionnaireInfo = _questionnaireModel.getQuestionnaireModelObj();
-    return questionnaireInfo;
+    return allQuestionnaireModels;
 }
 
 let createAllSectionsModelArray = function(sectionsDtoModelArray){
@@ -38,6 +83,7 @@ let createAllSectionsModelArray = function(sectionsDtoModelArray){
 }
 
 
+
 let createQuestionModelArray = function(questionsDtoModelArray ){
     let questionModelArray = [];
 
@@ -56,6 +102,7 @@ let createQuestionModelArray = function(questionsDtoModelArray ){
         questionModelArray.push(questionInfo);
     }
     return questionModelArray;
+
 }
 
 
@@ -78,13 +125,4 @@ let createQuestionChoicesModelArray = function(questionChoicesDtoModelArray){
     }
     return questionChoicesModelArray;
 }
-
-
-const questionnaireDomainHelper ={
-    createQuestionnaireModelArray : createQuestionnaireModelArray,
-    createAllSectionsModelArray : createAllSectionsModelArray,
-    createQuestionModelArray : createQuestionModelArray,
-    createQuestionChoicesModelArray : createQuestionChoicesModelArray
-}
-
-module.exports = questionnaireDomainHelper
+//#ENDREGION Private Functions

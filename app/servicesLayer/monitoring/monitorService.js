@@ -1,4 +1,4 @@
-const monitorConfig = require('../../../configuration/monitorConfig/monitorConfig.js');
+const monitorConfig = require('../../../configuration/monitoring/monitorConfig.js');
 const helpers = require('../common/helpers.js');
 
 
